@@ -18,11 +18,11 @@ def check_video_integrity(file_path):
     return True
 
 def convert_flv_to_mp3(name, target_name=None, folder='bilibili_video'):
-    input_path = f'{folder}/{name}.mp4'  
+    input_path = f'{folder}/{name}/{name}.mp4'  
     if not os.path.exists(input_path):
         raise FileNotFoundError(f"视频文件不存在: {input_path}")
-    if not check_video_integrity(input_path):
-        raise ValueError(f"视频文件损坏: {input_path}")
+    # if not check_video_integrity(input_path):
+    #     raise ValueError(f"视频文件损坏: {input_path}")
     # 提取视频中的音频并保存为 MP3 到 audio/conv 目录
     clip = VideoFileClip(input_path)
     audio = clip.audio
@@ -31,7 +31,7 @@ def convert_flv_to_mp3(name, target_name=None, folder='bilibili_video'):
     audio.write_audiofile(f"audio/conv/{output_name}.mp3")
 
 def split_mp3(filename, folder_name, slice_length=45000, target_folder="audio/slice"):
-    audio = AudioSegment.from_mp3(filename)
+    audio = AudioSegment.from_mp3(filename+".mp3")
     total_slices = (len(audio)+ slice_length - 1) // slice_length
     target_dir = os.path.join(target_folder, folder_name)
     os.makedirs(target_dir, exist_ok=True)
@@ -49,5 +49,6 @@ def process_audio_split(name):
     convert_flv_to_mp3(name, target_name=folder_name)
     conv_dir = f"audio/conv/{folder_name}"
     split_mp3(conv_dir, folder_name)
+    # split_mp3(conv_dir, folder_name, slice_length=10_000_000)
     return folder_name
 

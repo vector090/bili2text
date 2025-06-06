@@ -6,7 +6,10 @@ from speech2text import *
 
 av = input("请输入BV号：")
 filename = download_video(av[2:])
+print("filename", filename)
+
 foldername = process_audio_split(filename)
+print("foldername", foldername)
 
 
 load_whisper("small")

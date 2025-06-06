@@ -26,7 +26,7 @@ def download_video(bv_number):
     ensure_folders_exist(output_dir)
     print(f"使用you-get下载视频: {video_url}")
     try:
-        result = subprocess.run(["you-get", "-l", "-o", output_dir, video_url], capture_output=True, text=True)
+        result = subprocess.run(["you-get", "-l", "-o", output_dir, "-O", bv_number, video_url], capture_output=True, text=True)
         if result.returncode != 0:
             print("下载失败:", result.stderr)
         else:
